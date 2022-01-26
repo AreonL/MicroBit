@@ -28,7 +28,7 @@ export default {
       signIn: 'auth/signIn'
     }),
     login() {
-      this.signIn(this.username).then(() => {
+      this.signIn({name: this.username, password: this.password}).then(() => {
         this.$router.replace({
           name: 'Home'
         })

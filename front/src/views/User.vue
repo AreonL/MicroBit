@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="authenticated">
     <!-- <pre>{{ user }}</pre> -->
     <h1>Welcome {{ user.name }}</h1>
     <button @click="logOut" class="btn">Logga ut</button>

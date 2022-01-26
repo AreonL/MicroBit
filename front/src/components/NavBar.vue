@@ -5,7 +5,7 @@
       <router-link to="/">Home</router-link>
       <router-link to="/about">About</router-link>
       <router-link to="/user">User</router-link>
-      <router-link v-if="authenticated && user.isTeacher" to="/teacher">Teacher</router-link>
+      <router-link v-if="authenticated && (!!user.isTeacher)" to="/teacher">Teacher</router-link>
     </div>
     <!-- <div v-if="authenticated && user.isTeacher">
       <router-link to="/teacher">Teacher</router-link>

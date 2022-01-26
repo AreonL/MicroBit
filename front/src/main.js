@@ -6,7 +6,7 @@ import axios from "axios"
 
 require('@/store/subscriber')
 
-axios.defaults.baseURL = "http://localhost:5000"
+axios.defaults.baseURL = "http://localhost:5500"
 
 store.dispatch('auth/attemptLogin', localStorage.getItem('token')).then(() => {
   createApp(App).use(store).use(router).mount("#app")
