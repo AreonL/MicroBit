@@ -4,6 +4,10 @@ import router from "./router"
 import store from "./store"
 import axios from "axios"
 
+require('@/store/subscriber')
+
 axios.defaults.baseURL = "http://localhost:5000"
 
-createApp(App).use(store).use(router).mount("#app")
+store.dispatch('auth/attemptLogin', localStorage.getItem('token')).then(() => {
+  createApp(App).use(store).use(router).mount("#app")
+})

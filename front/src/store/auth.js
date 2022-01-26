@@ -29,20 +29,41 @@ export default {
       let response = await axios.get(`/auth?id=${credentials}`)
 
       console.log(response.data)
-      return dispatch('attemptLogin', response.data[0])
+      const data = [response.data[0].token, response.data[0].id]
+      return dispatch('attemptLogin', data)
     },
-    async attemptLogin ({ commit }, data) {
-      commit('SET_TOKEN', data.token)
+    async attemptLogin ({ commit, state }, data) {
+      // Data [0] == token, [1] == id
+      // https://youtu.be/sVDlFflesHU?list=PLfdtiltiRHWF1jqLcNO_2jWJXj9RuSDvY&t=320 changes the token to be accurate
+      // When JWT is done
+      if (typeof data === 'string' || !data) {
+        data = [data, "1"]
+      }
+
+      if (data[0]) {
+        commit('SET_TOKEN', data[0])
+      }
+
+      if (!state.token) {
+        return
+      }
 
       try {
         // get me
-        let response = await axios.get(`/auth?id=${data.id}`)
+        let response = await axios.get(`/auth?id=${data[1]}`)
         console.log(response.data[0])
         commit('SET_USER', response.data[0])
       } catch (err) {
         commit('SET_TOKEN', null)
         commit('SET_USER', null)
       }
+    },
+
+    signOut ({ commit }) {
+      return axios.get(`/auth?id=1`).then(() => {
+        commit('SET_TOKEN', null)
+        commit('SET_USER', null)
+      })
     }
   }
 }

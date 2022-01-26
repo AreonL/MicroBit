@@ -29,9 +29,9 @@ export default {
     }),
     login() {
       this.signIn(this.username).then(() => {
-        this.$router.replace({
-          name: '/'
-        })
+        // this.$router.replace({
+        //   name: 'Home'
+        // })
       }).catch(() => {
         console.log('signIn failed')
       })

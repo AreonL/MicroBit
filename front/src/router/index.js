@@ -4,6 +4,7 @@ import Home from "../views/Home.vue"
 import User from "../views/User.vue"
 import Teacher from "../views/Teacher.vue"
 import Login from "../views/Login.vue"
+import store from '@/store'
 
 const routes = [
   {
@@ -20,7 +21,7 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/About.vue"),
-      meta: { requiresAuth: true }
+    meta: { requiresAuth: true }
   },
   {
     path: "/user",
@@ -46,18 +47,18 @@ const router = createRouter({
   routes,
 })
 
-// router.beforeEach((to, from, next) => {
-//   if (to.matched.some(record => record.meta.requiresAuth)) {
-//     if (!helper.user) {
-//       next({
-//         name: "Login"
-//       })
-//     } else {
-//       next()
-//     }
-//   } else {
-//     next()
-//   }
-// })
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!store.getters['auth/authenticated']) {
+      next({
+        name: "Login"
+      })
+    } else {
+      next()
+    }
+  } else {
+    next()
+  }
+})
 
 export default router

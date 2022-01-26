@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   computed: {
@@ -17,8 +17,15 @@ export default {
     })
   },
   methods: {
+    ...mapActions({
+      signOut: 'auth/signOut'
+    }),
     logOut() {
-      this.$router.push("/")
+      this.signOut().then(() => {
+        this.$router.replace({
+          name: "Home"
+        })
+      })
     }
   }
 }
