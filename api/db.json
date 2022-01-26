@@ -1,0 +1,19 @@
+{
+  "auth": [
+    {
+      "name": "a",
+      "id": "1",
+      "token": "123",
+      "isTeacher": true
+    },
+    {
+      "name": "b",
+      "id": "2",
+      "token": "321",
+      "isTeacher": false
+    }
+  ],
+  "db": [],
+  "students": [],
+  "teachers": []
+}
