@@ -1,12 +1,16 @@
 <template>
-  <div>
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view />
-  </div>
+  <NavBar />
 </template>
+
+<script>
+import NavBar from "@/components/NavBar"
+
+export default {
+  components: {
+    NavBar
+  }
+}
+</script>
 
 <style lang="scss">
 #app {
