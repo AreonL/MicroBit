@@ -1,7 +1,7 @@
 <template>
   <div>
-    <pre>{{ user }}</pre>
-    <h1>Welcome {{ User }}</h1>
+    <!-- <pre>{{ user }}</pre> -->
+    <h1>Welcome {{ user.name }}</h1>
     <button @click="logOut" class="btn">Logga ut</button>
   </div>
 </template>

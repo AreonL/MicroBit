@@ -33,12 +33,21 @@ const routes = [
     path: "/teacher",
     name: "Teacher",
     component: Teacher,
-    meta: { requiresAuth: true }
+    meta: { requiresTeacher: true }
   },
   {
     path: "/login",
     name: "Login",
-    component: Login
+    component: Login,
+    beforeEnter: (to, from, next) => {
+      if (store.getters['auth/authenticated']) {
+        next({
+          name: "Home"
+        })
+      } else {
+        next()
+      }
+    }
   }
 ]
 
@@ -52,6 +61,14 @@ router.beforeEach((to, from, next) => {
     if (!store.getters['auth/authenticated']) {
       next({
         name: "Login"
+      })
+    } else {
+      next()
+    }
+  } else if (to.matched.some(record => record.meta.requiresTeacher)) {
+    if (!store.getters['auth/user'].isTeacher) {
+      next({
+        name: "Home"
       })
     } else {
       next()

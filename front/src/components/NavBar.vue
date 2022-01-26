@@ -1,6 +1,6 @@
 <template>
   <div>
-    <pre>{{ user }}</pre>
+    <!-- <pre>{{ user }}</pre> -->
     <div id="nav" v-if="authenticated">
       <router-link to="/">Home</router-link>
       <router-link to="/about">About</router-link>

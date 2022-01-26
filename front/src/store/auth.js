@@ -51,7 +51,7 @@ export default {
       try {
         // get me
         let response = await axios.get(`/auth?id=${data[1]}`)
-        console.log(response.data[0])
+        // console.log(response.data[0])
         commit('SET_USER', response.data[0])
       } catch (err) {
         commit('SET_TOKEN', null)
