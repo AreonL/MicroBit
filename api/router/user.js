@@ -15,16 +15,27 @@ router.get('/', async (req, res) => {
   res.status(200).json(users[0])
 })
 
+router.get('/me', authenticateToken, async (req, res) => {
+  const users = await db.promise().query(`select * from users`)
+  const user = users[0].find(user => user.acronym === req.user.acronym)
+  res.status(200).json(user)
+})
+
 router.post('/', async (req, res) => {
-  const { name, password } = req.body;
+  let { acronym, firstname, lastname, password } = req.body;
   const isTeacher = false;
-  if (name && password) {
+
+  firstname = capitalizeFirstLetter(firstname.toLowerCase())
+  lastname = capitalizeFirstLetter(lastname.toLowerCase())
+
+
+  if (acronym && firstname && lastname && password) {
     try {
       // Crypt password
       const hashedPassword = await bcrypt.hash(password, 10)
 
       // Insert into database
-      db.promise().query(`INSERT INTO USERS VALUES('${name}', '${hashedPassword}', ${isTeacher})`)
+      db.promise().query(`INSERT INTO USERS VALUES('${acronym.toLowerCase()}', '${firstname}', '${lastname}', '${hashedPassword}', ${isTeacher})`)
       res.status(201).send({ msg: 'Created User' })
     } catch (err) {
       console.log(err)
@@ -34,22 +45,24 @@ router.post('/', async (req, res) => {
 
 router.post('/login', async (req, res) => {
   const users = await db.promise().query(`select * from users`)
-  const user = users[0].find(user => user.name === req.body.name)
+  const user = users[0].find(user => user.acronym === req.body.acronym)
   if (user == null) {
     return res.status(400).send('Cannot find user')
   }
+  const userData = {
+    acronym: user.acronym,
+    firstname: user.firstname,
+    lastname: user.lastname,
+    isTeacher: user.isTeacher
+  }
   try {
     if (await bcrypt.compare(req.body.password, user.password)) {
-      const accessToken = jwt.sign(user.name, process.env.ACCESS_TOKEN_SECRET)
+      const accessToken = jwt.sign(userData, process.env.ACCESS_TOKEN_SECRET)
 
-      const data = {
-        name: user.name,
-        token: accessToken,
-        msg: `Succressfully logged in`,
-        isTeacher: user.isTeacher
-      }
+      userData.token = accessToken
+      userData.msg = `Successfully logged in.`
 
-      res.send(data)
+      res.send(userData)
     } else {
       res.send('Not Allowed, login failed')
     }
@@ -59,11 +72,16 @@ router.post('/login', async (req, res) => {
 })
 
 router.patch('/', async (req, res) => {
-  const { name, toggle } = req.body
-  const user = await db.promise().query(`select ${toggle} from users where name='${name}'`)
-  const power = !user[0][0].isTeacher
+  const { acronym, toggle } = req.body
+  const user = await db.promise().query(`select ${toggle} from users where acronym='${acronym}'`)
+  let power
+  if (toggle === 'isTeacher') {
+    power = !user[0][0].isTeacher
+  } else if (toggle === 'isAdmin') {
+    power = !user[0][0].isAdmin
+  }
   try {
-    await db.promise().query(`update users set ${toggle}=${power} where name='${name}'`)
+    await db.promise().query(`update users set ${toggle}=${power} where acronym='${acronym}'`)
     res.status(201).send({ msg: `Toggled power of ${toggle}` })
   } catch (err) {
     console.log(err)
@@ -78,6 +96,22 @@ router.delete('/', async (req, res) => {
     console.log(err)
   }
 })
+
+function authenticateToken(req, res, next) {
+  const authHeader = req.headers['authorization']
+  const token = authHeader && authHeader.split(' ')[1]
+  if (token == null) return res.sendStatus(401)
+
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+    if (err) return res.sendStatus(403)
+    req.user = user
+    next()
+  })
+}
+
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
 
 
 // router.post('/', async (req, res) => {

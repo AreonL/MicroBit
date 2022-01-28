@@ -17,7 +17,9 @@ POST http://localhost:5500/users
 Content-Type: application/json
 
 {
-  "name": "Kyle",
+  "acronym": "kyja20",
+  "firstname": "KYLE",
+  "lastname": "jacobs",
   "password": "password"
 }
 
@@ -26,7 +28,9 @@ POST http://localhost:5500/users
 Content-Type: application/json
 
 {
-  "name": "Jim",
+  "acronym": "jibo20",
+  "firstname": "jim",
+  "lastname": "BOI",
   "password": "password2"
 }
 
@@ -35,8 +39,21 @@ POST http://localhost:5500/users
 Content-Type: application/json
 
 {
-  "name": "a",
+  "acronym": "a",
+  "firstname": "a",
+  "lastname": "a",
   "password": "a"
+}
+
+### Me
+POST http://localhost:5500/users
+Content-Type: application/json
+
+{
+  "acronym": "B",
+  "firstname": "B",
+  "lastname": "B",
+  "password": "b"
 }
 
 ### toggle power
@@ -44,7 +61,7 @@ PATCH http://localhost:5500/users
 Content-Type: application/json
 
 {
-  "name": "a",
+  "acronym": "a",
   "toggle": "isTeacher"
 }
 
@@ -53,9 +70,21 @@ POST http://localhost:5500/users/login
 Content-Type: application/json
 
 {
-  "name": "Kyle",
+  "acronym": "KYJA20",
   "password": "password"
 }
 
 ###
 DELETE http://localhost:5500/users
+
+###
+DELETE http://localhost:5500/users/one
+Content-Type: application/json
+
+{
+  "acronym": "b"
+}
+
+###
+GET http://localhost:5500/users/me
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiS3lsZSIsImlzVGVhY2hlciI6MCwiaWF0IjoxNjQzMjg3NDAxfQ.LU1FGFMzzbGLF5isA6-g29DdFhQcM6hyA-x7cTrCjIo
