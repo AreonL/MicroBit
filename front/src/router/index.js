@@ -1,8 +1,13 @@
 import { createRouter, createWebHistory } from "vue-router"
 // import helper from "@/helper"
 import Home from "../views/Home.vue"
+import Hand from "../views/Hand.vue"
 import User from "../views/User.vue"
 import Teacher from "../views/Teacher.vue"
+import Rapport from "../views/teacher/Rapport.vue"
+import StudentAdd from "../views/teacher/StudentAdd.vue"
+import StudentList from "../views/teacher/StudentList.vue"
+import StudentPage from "../views/teacher/StudentPage.vue"
 import Login from "../views/Login.vue"
 import store from '@/store'
 
@@ -14,13 +19,9 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
-    path: "/about",
-    name: "About",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue"),
+    path: "/hand",
+    name: "Hand",
+    component: Hand,
     meta: { requiresAuth: true }
   },
   {
@@ -33,6 +34,30 @@ const routes = [
     path: "/teacher",
     name: "Teacher",
     component: Teacher,
+    meta: { requiresTeacher: true }
+  },
+  {
+    path: "/teacher/rapport",
+    name: "Rapport",
+    component: Rapport,
+    meta: { requiresTeacher: true }
+  },
+  {
+    path: "/teacher/studentList",
+    name: "StudentList",
+    component: StudentList,
+    meta: { requiresTeacher: true }
+  },
+  {
+    path: "/teacher/studentAdd",
+    name: "StudentAdd",
+    component: StudentAdd,
+    meta: { requiresTeacher: true }
+  },
+  {
+    path: "/teacher/student/:acronym",
+    name: "StudentPage",
+    component: StudentPage,
     meta: { requiresTeacher: true }
   },
   {
