@@ -64,7 +64,7 @@ router.post('/login', async (req, res) => {
 
       res.send(userData)
     } else {
-      res.send('Not Allowed, login failed')
+      res.status(401).send('Login failed, wrong password')
     }
   } catch {
     res.status(500).send()
