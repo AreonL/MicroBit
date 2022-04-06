@@ -1,6 +1,6 @@
 <template>
   <div class="about">
-    <h1>Räck upp handen</h1>
+    <h1>Välj delmoment</h1>
     <HandUp />
   </div>
 </template>

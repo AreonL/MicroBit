@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- <pre>{{ user }}</pre> -->
-    <div id="nav" v-if="authenticated">
+    <div id="nav" v-if="authenticated && $route.path != '/hand'">
       <router-link to="/">Home</router-link>
       <router-link to="/hand">Hand</router-link>
       <router-link to="/user">User</router-link>
